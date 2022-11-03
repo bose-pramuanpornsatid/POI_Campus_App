@@ -3,6 +3,7 @@ package edu.illinois.cs.cs124.ay2022.mp.activities;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import edu.illinois.cs.cs124.ay2022.mp.R;
 import edu.illinois.cs.cs124.ay2022.mp.application.FavoritePlacesApplication;
 import edu.illinois.cs.cs124.ay2022.mp.models.Place;
@@ -28,7 +29,7 @@ import org.osmdroid.views.overlay.Overlay;
  */
 @SuppressWarnings("FieldCanBeLocal")
 public final class MainActivity extends AppCompatActivity
-    implements Consumer<ResultMightThrow<List<Place>>> {
+    implements Consumer<ResultMightThrow<List<Place>>>, SearchView.OnQueryTextListener {
   // You may find this useful when adding logging
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -69,6 +70,7 @@ public final class MainActivity extends AppCompatActivity
   protected void onCreate(final Bundle unused) {
     super.onCreate(unused);
 
+    // -- MAP VIEW --
     // Store a reference to the application instance so that we can access it in other methods
     favoritePlacesApplication = (FavoritePlacesApplication) getApplication();
 
@@ -99,6 +101,11 @@ public final class MainActivity extends AppCompatActivity
     IMapController mapController = mapView.getController();
     mapController.setZoom(MAP_DEFAULT_ZOOM);
     mapController.setCenter(DEFAULT_CENTER);
+
+    // -- SEARCH VIEW --
+    // Find the SearchView component in the layout and configure it properly
+    SearchView searchView = findViewById(R.id.search);
+    searchView.setOnQueryTextListener(this);
   }
 
   /*
@@ -213,5 +220,32 @@ public final class MainActivity extends AppCompatActivity
 
     // Force the MapView to redraw so that we see the updated list of markers
     mapView.invalidate();
+  }
+
+  /*
+   * -- PLACE SEARCH FEATURE --
+   * implements SearchView.OnQueryTextListener
+   * onQueryTextSubmit(), onQueryTextChange()
+   * listen to text change in search and update shown place using Place.search()
+   * Behaviors -
+   * 1. Show places that match search description
+   * 2. Show all places when no place match search description
+   */
+  @Override
+  public boolean onQueryTextSubmit(final String text) {
+    // Log.d(TAG, "onQueryTextSubmit " + text);
+    return false; // Action not handled
+  }
+
+  @Override
+  public boolean onQueryTextChange(final String text) {
+    Log.d(TAG, "onQueryTextChange " + text);
+    List<Place> searchPlaces = Place.search(allPlaces, text);
+    if (searchPlaces.isEmpty()) {
+      this.updateShownPlaces(allPlaces);
+    } else {
+      this.updateShownPlaces(searchPlaces);
+    }
+    return true; // Handled the action
   }
 }
