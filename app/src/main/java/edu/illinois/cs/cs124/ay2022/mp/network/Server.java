@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import okhttp3.OkHttpClient;
@@ -67,6 +68,71 @@ public final class Server extends Dispatcher {
         .setHeader("Content-Type", "application/json; charset=utf-8");
   }
 
+  // Helper method
+  private MockResponse postFavoritePlace(final RecordedRequest request) {
+    // Request body contain json format for Place.java
+    System.out.println(request.getBody());
+    String jsonReq = request.getBody().readUtf8();
+    System.out.println(jsonReq);
+
+    // Deserialize POST body to Place Object
+    // On failure, return a 400 Bad Request
+    // - Check the resulting Place object to make sure it's valid !null
+    // * When lat, lon empty : Jackson default value double to 0.0
+    // We are using the Jackson JSON serialization library to deserialize request json string
+    Place placeReq;
+    final ObjectMapper objectMapper =
+        new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    try {
+      // Deserialize
+      placeReq = objectMapper.readValue(jsonReq, Place.class);
+      // Check for illegel argument
+      boolean b1 = (placeReq.getId() == null);
+      if (b1) {
+        throw new IllegalArgumentException();
+      }
+      UUID uuid = UUID.fromString(placeReq.getId()); // check if UUID is valid using fromString
+      boolean b2 = (placeReq.getName() == null) || (placeReq.getName().trim().length() == 0);
+      boolean b3 = (placeReq.getLatitude() < -90 || placeReq.getLatitude() > 90);
+      boolean b4 = (placeReq.getLongitude() < -180 || placeReq.getLongitude() > 180);
+      boolean b5 = (placeReq.getDescription() == null || (placeReq.getDescription().trim().length() == 0));
+      if (b2 || b3 || b4 || b5) {
+        throw new IllegalArgumentException();
+      }
+      // Check if json string contain lat lon
+      if (!jsonReq.contains("latitude") || !jsonReq.contains("longitude")) {
+        throw new IllegalArgumentException();
+      }
+
+    } catch (JsonProcessingException | IllegalArgumentException e) {
+      return new MockResponse()
+          // Indicate that it is a bad request (HTTP 400 BAD)
+          .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+          .setHeader("Content-Type", "application/json; charset=utf-8");
+    }
+
+    // Insert valid Place object to list of places
+    // If ID is new, add it
+    // else, replace it
+
+    Place temp = null;
+    for (Place place : places) {
+      if (Objects.equals(place.getId(), placeReq.getId())) {
+        temp = place;
+      }
+    }
+    places.remove(temp);
+    if (temp != null) {
+      System.out.println("Replace: " + temp.getId() + " | " + placeReq.getId());
+    }
+    places.add(placeReq);
+
+    return new MockResponse()
+        // Indicate that the request succeeded (HTTP 200 OK)
+        .setResponseCode(HttpURLConnection.HTTP_OK)
+        .setHeader("Content-Type", "application/json; charset=utf-8");
+  }
+
   /*
    * Server request dispatcher.
    * Responsible for parsing the HTTP request and determining how to respond.
@@ -102,6 +168,8 @@ public final class Server extends Dispatcher {
       } else if (path.equals("/places") && method.equals("GET")) {
         // Return the JSON list of restaurants for a GET request to the path /restaurants
         return getPlaces();
+      } else if (path.equals("/favoriteplace") && method.equals("POST")) {
+        return postFavoritePlace(request);
       }
 
       // If the route didn't match above, then we return a 404 NOT FOUND
