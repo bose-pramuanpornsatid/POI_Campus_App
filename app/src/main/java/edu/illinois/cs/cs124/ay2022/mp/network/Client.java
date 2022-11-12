@@ -16,7 +16,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.NotImplementedException;
 import edu.illinois.cs.cs124.ay2022.mp.application.FavoritePlacesApplication;
 import edu.illinois.cs.cs124.ay2022.mp.models.Place;
 import edu.illinois.cs.cs124.ay2022.mp.models.ResultMightThrow;
@@ -25,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -44,22 +44,27 @@ public final class Client {
   // You may find this useful when debugging
   private static final String TAG = Client.class.getSimpleName();
 
-  // We are using the Jackson JSON serialization library to deserialize data from the server
+  // We are using the Jackson JSON serialization library to deserialize data from
+  // the server
   private static final ObjectMapper OBJECT_MAPPER =
       new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   /*
    * Retrieve and deserialize a list of places from the backend server.
-   * Takes as an argument a callback method to call when the request completes which will be passed
-   * the deserialized list of places received from the server, wrapped in a ResultMightThrow
+   * Takes as an argument a callback method to call when the request completes
+   * which will be passed
+   * the deserialized list of places received from the server, wrapped in a
+   * ResultMightThrow
    * to allow us to also report errors.
-   * We will discuss callbacks in more detail once you need to augment this code in MP2.
+   * We will discuss callbacks in more detail once you need to augment this code
+   * in MP2.
    */
   public void getPlaces(final Consumer<ResultMightThrow<List<Place>>> callback) {
     /*
      * Construct the request itself.
      * We use a StringRequest allowing us to receive a String from the server.
-     * The String will be valid JSON containing a list of place objects which we can deserialize
+     * The String will be valid JSON containing a list of place objects which we can
+     * deserialize
      * into instances of our Place model.
      */
     StringRequest getPlacesRequest =
@@ -95,16 +100,65 @@ public final class Client {
     requestQueue.add(getPlacesRequest);
   }
 
-  public void postFavoritePlace(final Place place, final Consumer<ResultMightThrow<Boolean>> callback) {
-    throw new NotImplementedException();
+  /*
+   * Post place json to server by serializing incoming place object
+   * The serialized place will then be added to list of places
+   * Return true to callback if succeed, return Exception if failed
+   */
+  public void postFavoritePlace(
+      final Place place, final Consumer<ResultMightThrow<Boolean>> callback) {
+    String newPlaceJSON = null;
+    try {
+      newPlaceJSON = OBJECT_MAPPER.writeValueAsString(place);
+    } catch (JsonProcessingException e) {
+      callback.accept(new ResultMightThrow<>(e));
+    }
+    String finalNewPlaceJSON = newPlaceJSON;
+    StringRequest postFavoritePlaceRequest =
+        new StringRequest(
+            Request.Method.POST,
+            FavoritePlacesApplication.SERVER_URL + "/favoriteplace/",
+            response -> {
+              // This code runs on success
+              try {
+                Log.i(TAG, response);
+                // Pass the true to the callback if place added to places in server
+                // If fail, throw exception
+                callback.accept(new ResultMightThrow<>(true));
+              } catch (Exception error) {
+                // Pass the Exception to the callback on error
+                callback.accept(new ResultMightThrow<>(error));
+              }
+            },
+            error -> {
+              // This code runs on failure
+              // Pass the Exception to the callback on error
+              callback.accept(new ResultMightThrow<>(error));
+            }) {
+          @Override
+          public byte[] getBody() {
+            return finalNewPlaceJSON.getBytes(StandardCharsets.UTF_8);
+          }
+
+          @Override
+          public String getBodyContentType() {
+            return "application/json; charset=utf-8";
+          }
+        };
+    // Actually queue the request
+    // The callbacks above will be run once it completes
+    requestQueue.add(postFavoritePlaceRequest);
   }
 
   /*
    * You do not need to modify the code below.
    * However, you may want to understand how it works.
-   * It implements the singleton pattern and initializes the client when Client.start() is called.
-   * The client tests to make sure it can connect to the backend server on startup.
-   * We also initialize the client somewhat differently depending on whether we are testing your code or actually
+   * It implements the singleton pattern and initializes the client when
+   * Client.start() is called.
+   * The client tests to make sure it can connect to the backend server on
+   * startup.
+   * We also initialize the client somewhat differently depending on whether we
+   * are testing your code or actually
    * running the app.
    */
 

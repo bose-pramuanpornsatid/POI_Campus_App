@@ -95,7 +95,8 @@ public final class Server extends Dispatcher {
       boolean b2 = (placeReq.getName() == null) || (placeReq.getName().trim().length() == 0);
       boolean b3 = (placeReq.getLatitude() < -90 || placeReq.getLatitude() > 90);
       boolean b4 = (placeReq.getLongitude() < -180 || placeReq.getLongitude() > 180);
-      boolean b5 = (placeReq.getDescription() == null || (placeReq.getDescription().trim().length() == 0));
+      boolean b5 =
+          (placeReq.getDescription() == null || (placeReq.getDescription().trim().length() == 0));
       if (b2 || b3 || b4 || b5) {
         throw new IllegalArgumentException();
       }
@@ -205,7 +206,11 @@ public final class Server extends Dispatcher {
     for (String[] parts : csvReader) {
       toReturn.add(
           new Place(
-              parts[0], parts[1], Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), parts[4]));
+              parts[0],
+              parts[1],
+              Double.parseDouble(parts[2]),
+              Double.parseDouble(parts[3]),
+              parts[4]));
     }
     return toReturn;
   }
