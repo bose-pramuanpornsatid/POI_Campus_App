@@ -1,5 +1,6 @@
 package edu.illinois.cs.cs124.ay2022.mp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import org.osmdroid.api.IMapController;
+import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
 
@@ -29,7 +32,7 @@ import org.osmdroid.views.overlay.Overlay;
  */
 @SuppressWarnings("FieldCanBeLocal")
 public final class MainActivity extends AppCompatActivity
-    implements Consumer<ResultMightThrow<List<Place>>>, SearchView.OnQueryTextListener {
+    implements Consumer<ResultMightThrow<List<Place>>>, SearchView.OnQueryTextListener, MapEventsReceiver {
   // You may find this useful when adding logging
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -218,6 +221,8 @@ public final class MainActivity extends AppCompatActivity
     // This will clear openPlace if the marker that was previously shown is no longer open
     openPlace = newOpenPlace;
 
+    mapView.getOverlays().add(new MapEventsOverlay(this));
+
     // Force the MapView to redraw so that we see the updated list of markers
     mapView.invalidate();
   }
@@ -247,5 +252,25 @@ public final class MainActivity extends AppCompatActivity
       this.updateShownPlaces(searchPlaces);
     }
     return true; // Handled the action
+  }
+
+  @Override
+  public boolean singleTapConfirmedHelper(final GeoPoint p) {
+    Log.d(TAG, "singleTap");
+    return false;
+  }
+
+  @Override
+  public boolean longPressHelper(final GeoPoint p) {
+    Log.d(TAG, "longPress");
+    Log.d(TAG, "" + p.getLatitude() + ", " + p.getLongitude());
+    Intent launchAddPlaceActivity = new Intent(this, AddPlaceActivity.class);
+    String lat = Double.toString(p.getLatitude());
+    String lon = Double.toString(p.getLongitude());
+    launchAddPlaceActivity.putExtra("latitude", lat);
+    launchAddPlaceActivity.putExtra("longitude", lon);
+    startActivity(launchAddPlaceActivity);
+
+    return true;
   }
 }
