@@ -100,10 +100,6 @@ public final class Server extends Dispatcher {
       if (b2 || b3 || b4 || b5) {
         throw new IllegalArgumentException();
       }
-      // Check if json string contain lat lon
-      if (!jsonReq.contains("latitude") || !jsonReq.contains("longitude")) {
-        throw new IllegalArgumentException();
-      }
 
     } catch (JsonProcessingException | IllegalArgumentException e) {
       return new MockResponse()

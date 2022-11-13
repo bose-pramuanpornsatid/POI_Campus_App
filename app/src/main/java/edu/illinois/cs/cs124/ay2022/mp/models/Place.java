@@ -43,14 +43,14 @@ public final class Place {
     return name;
   }
 
+  // Default value when setLon, setLat is not pass into constructor
   // Latitude and longitude of the place
-  private double latitude;
+  private double latitude = -999999999;
+  private double longitude = -999999999;
 
   public double getLatitude() {
     return latitude;
   }
-
-  private double longitude;
 
   public double getLongitude() {
     return longitude;
