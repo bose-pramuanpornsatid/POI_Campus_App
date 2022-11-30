@@ -69,6 +69,9 @@ dependencies {
     implementation("com.opencsv:opencsv:5.7.0")
     implementation("com.google.android.gms:play-services-maps:18.0.2")
 
+    // Additional dependencies for google map street view
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+
     testImplementation("com.github.cs125-illinois:gradlegrader:2022.10.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.9")

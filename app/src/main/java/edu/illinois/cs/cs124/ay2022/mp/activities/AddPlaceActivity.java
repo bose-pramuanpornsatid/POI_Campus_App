@@ -60,6 +60,7 @@ public class AddPlaceActivity extends AppCompatActivity {
     Button saveButton = findViewById(R.id.save_button);
     saveButton.setOnClickListener(
         v -> {
+          // TODO: Set the correct field to the correct data
           Log.d(TAG, "Save button clicked: " + lat + " | " + lon);
           EditText descriptionWidget = findViewById(R.id.description);
           String description = descriptionWidget.getText().toString();

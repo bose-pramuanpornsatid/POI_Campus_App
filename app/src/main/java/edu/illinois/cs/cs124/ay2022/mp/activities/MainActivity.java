@@ -3,6 +3,7 @@ package edu.illinois.cs.cs124.ay2022.mp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import edu.illinois.cs.cs124.ay2022.mp.R;
@@ -186,6 +187,7 @@ public final class MainActivity extends AppCompatActivity
       // Set the ID so that we can track which marker has an open popup
       marker.setId(place.getId());
 
+      // TODO: Set the correct field to the correct data
       // Set the position and other attributes appropriately
       marker.setPosition(new GeoPoint(place.getLatitude(), place.getLongitude()));
       marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
@@ -193,29 +195,9 @@ public final class MainActivity extends AppCompatActivity
       marker.setSubDescription(place.getName());
       marker.setSnippet(place.getDescription());
 
+      // Custom marker info window
       BasicInfoWindow basicInfoWindow = new BasicInfoWindow(R.layout.infowindow, mapView);
       marker.setInfoWindow(basicInfoWindow);
-
-      // MarkerInfoWindow
-//        MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.infowindow, mapView);
-//        marker.setInfoWindow(markerInfoWindow);
-
-//      @Override
-//      public void onOpen(Object item) {
-//        super.onOpen(item);
-//
-//        mMarkerRef = (Marker) item;
-//        if (mView == null) {
-//          Log.w(IMapView.LOGTAG, "Error trapped, MarkerInfoWindow.open, mView is null!");
-//          return;
-//        }
-//        View view = MainActivity.this.getLayoutInflater().inflate(R.layout.infowindow, null);
-////          TextView tvTitle = (TextView) view.findViewById(R.id.title);
-////          TextView tvSubTitle = (TextView) view.findViewById(R.id.snippet);
-//        String title = view.findViewById(R.id.title).toString();
-//        String subtitle = view.findViewById(R.id.snippet).toString();
-//        mMarkerRef.setTitle(title);
-//        mMarkerRef.setSnippet(subtitle);
 
       /*
        * Normally clicking on the marker both opens the popup and recenters the map.
@@ -228,8 +210,23 @@ public final class MainActivity extends AppCompatActivity
           (m, unused) -> {
             InfoWindow window = m.getInfoWindow();
             if (!m.getInfoWindow().isOpen()) {
+              // Show info window
               m.showInfoWindow();
               openPlace = m.getId();
+              // Listen for button click, launch street view with place coordinate
+              ImageButton streetButton = findViewById(R.id.infoWindowButton);
+              streetButton.setOnClickListener(
+                  v -> {
+                    Log.d(TAG, "Street View Button Clicked: " + marker.getId());
+                    Intent launchStreetview = new Intent(this, StreetView.class);
+                    GeoPoint loc = marker.getPosition();
+                    String lat = Double.toString(loc.getLatitude());
+                    String lon = Double.toString(loc.getLongitude());
+                    launchStreetview.putExtra("latitude", lat);
+                    launchStreetview.putExtra("longitude", lon);
+                    startActivity(launchStreetview);
+                  }
+              );
             } else {
               m.closeInfoWindow();
               openPlace = null;
@@ -287,7 +284,9 @@ public final class MainActivity extends AppCompatActivity
 
   @Override
   public boolean singleTapConfirmedHelper(final GeoPoint p) {
-    Log.d(TAG, "singleTap");
+//    Log.d(TAG, "singleTap");
+//    Intent launchStreetview = new Intent(this, StreetView.class);
+//    startActivity(launchStreetview);
     return false;
   }
 
