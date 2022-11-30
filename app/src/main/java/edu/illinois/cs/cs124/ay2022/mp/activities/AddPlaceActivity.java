@@ -61,9 +61,10 @@ public class AddPlaceActivity extends AppCompatActivity {
     saveButton.setOnClickListener(
         v -> {
           Log.d(TAG, "Save button clicked: " + lat + " | " + lon);
-          EditText testWidget = findViewById(R.id.description);
-          String description = testWidget.getText().toString();
-          String name = "Test AddPlaceActivity"; // Set temporally name
+          EditText descriptionWidget = findViewById(R.id.description);
+          String description = descriptionWidget.getText().toString();
+          EditText nameWidget = findViewById(R.id.name);
+          String name = nameWidget.getText().toString();
           String id = FavoritePlacesApplication.CLIENT_ID;
 
           // Init new place

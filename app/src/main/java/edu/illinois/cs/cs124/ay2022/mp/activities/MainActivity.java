@@ -20,6 +20,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
+import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 /*
  * App main activity.
@@ -188,6 +190,32 @@ public final class MainActivity extends AppCompatActivity
       marker.setPosition(new GeoPoint(place.getLatitude(), place.getLongitude()));
       marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
       marker.setTitle(place.getDescription());
+      marker.setSubDescription(place.getName());
+      marker.setSnippet(place.getDescription());
+
+      BasicInfoWindow basicInfoWindow = new BasicInfoWindow(R.layout.infowindow, mapView);
+      marker.setInfoWindow(basicInfoWindow);
+
+      // MarkerInfoWindow
+//        MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.infowindow, mapView);
+//        marker.setInfoWindow(markerInfoWindow);
+
+//      @Override
+//      public void onOpen(Object item) {
+//        super.onOpen(item);
+//
+//        mMarkerRef = (Marker) item;
+//        if (mView == null) {
+//          Log.w(IMapView.LOGTAG, "Error trapped, MarkerInfoWindow.open, mView is null!");
+//          return;
+//        }
+//        View view = MainActivity.this.getLayoutInflater().inflate(R.layout.infowindow, null);
+////          TextView tvTitle = (TextView) view.findViewById(R.id.title);
+////          TextView tvSubTitle = (TextView) view.findViewById(R.id.snippet);
+//        String title = view.findViewById(R.id.title).toString();
+//        String subtitle = view.findViewById(R.id.snippet).toString();
+//        mMarkerRef.setTitle(title);
+//        mMarkerRef.setSnippet(subtitle);
 
       /*
        * Normally clicking on the marker both opens the popup and recenters the map.
@@ -198,7 +226,8 @@ public final class MainActivity extends AppCompatActivity
        */
       marker.setOnMarkerClickListener(
           (m, unused) -> {
-            if (!m.isInfoWindowShown()) {
+            InfoWindow window = m.getInfoWindow();
+            if (!m.getInfoWindow().isOpen()) {
               m.showInfoWindow();
               openPlace = m.getId();
             } else {
