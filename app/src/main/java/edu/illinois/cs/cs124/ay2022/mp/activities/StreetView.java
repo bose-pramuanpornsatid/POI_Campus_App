@@ -12,15 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class StreetView extends AppCompatActivity {
-  // George St, Sydney
-//  private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
-
   private StreetViewPanoramaView streetViewPanoramaView;
-
   private static final String STREETVIEW_BUNDLE_KEY = "AIzaSyB8sOA9n9Xif8MXn2tjvGATRzsVT_Bs5Og";
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     // Get this activity intent and value passed through extra
@@ -72,7 +68,7 @@ public class StreetView extends AppCompatActivity {
   }
 
   @Override
-  public void onSaveInstanceState(@NonNull Bundle outState) {
+  public void onSaveInstanceState(@NonNull final Bundle outState) {
     super.onSaveInstanceState(outState);
 
     Bundle streetViewBundle = outState.getBundle(STREETVIEW_BUNDLE_KEY);

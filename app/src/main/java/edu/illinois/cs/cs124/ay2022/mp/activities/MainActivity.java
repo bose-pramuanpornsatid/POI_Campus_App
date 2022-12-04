@@ -187,12 +187,11 @@ public final class MainActivity extends AppCompatActivity
       // Set the ID so that we can track which marker has an open popup
       marker.setId(place.getId());
 
-      // TODO: Set the correct field to the correct data
       // Set the position and other attributes appropriately
       marker.setPosition(new GeoPoint(place.getLatitude(), place.getLongitude()));
       marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-      marker.setTitle(place.getDescription());
-      marker.setSubDescription(place.getName());
+      marker.setTitle(place.getName());
+      marker.setSubDescription(place.getUsername());
       marker.setSnippet(place.getDescription());
 
       // Custom marker info window
@@ -292,15 +291,16 @@ public final class MainActivity extends AppCompatActivity
 
   @Override
   public boolean longPressHelper(final GeoPoint p) {
-    Log.d(TAG, "longPress");
-    Log.d(TAG, "" + p.getLatitude() + ", " + p.getLongitude());
-    Intent launchAddPlaceActivity = new Intent(this, AddPlaceActivity.class);
-    String lat = Double.toString(p.getLatitude());
-    String lon = Double.toString(p.getLongitude());
-    launchAddPlaceActivity.putExtra("latitude", lat);
-    launchAddPlaceActivity.putExtra("longitude", lon);
-    startActivity(launchAddPlaceActivity);
-
+    if (!mapView.isAnimating()) {
+      Log.d(TAG, "longPress");
+      Log.d(TAG, "" + p.getLatitude() + ", " + p.getLongitude());
+      Intent launchAddPlaceActivity = new Intent(this, AddPlaceActivity.class);
+      String lat = Double.toString(p.getLatitude());
+      String lon = Double.toString(p.getLongitude());
+      launchAddPlaceActivity.putExtra("latitude", lat);
+      launchAddPlaceActivity.putExtra("longitude", lon);
+      startActivity(launchAddPlaceActivity);
+    }
     return true;
   }
 }

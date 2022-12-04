@@ -60,16 +60,17 @@ public class AddPlaceActivity extends AppCompatActivity {
     Button saveButton = findViewById(R.id.save_button);
     saveButton.setOnClickListener(
         v -> {
-          // TODO: Set the correct field to the correct data
           Log.d(TAG, "Save button clicked: " + lat + " | " + lon);
           EditText descriptionWidget = findViewById(R.id.description);
           String description = descriptionWidget.getText().toString();
           EditText nameWidget = findViewById(R.id.name);
           String name = nameWidget.getText().toString();
+          EditText usernameWidget = findViewById(R.id.username);
+          String username = usernameWidget.getText().toString();
           String id = FavoritePlacesApplication.CLIENT_ID;
 
           // Init new place
-          Place place = new Place(id, name, lat, lon, description);
+          Place place = new Place(id, username, lat, lon, name, description);
           // Try posting place to server using helper function
           try {
             clientPostPlace(place);

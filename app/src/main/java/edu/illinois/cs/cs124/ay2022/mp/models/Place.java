@@ -18,14 +18,16 @@ public final class Place {
 
   public Place(
       final String setId,
-      final String setName,
+      final String setUsername,
       final double setLatitude,
       final double setLongitude,
+      final String setName,
       final String setDescription) {
     id = setId;
-    name = setName;
+    username = setUsername;
     latitude = setLatitude;
     longitude = setLongitude;
+    name = setName;
     description = setDescription;
   }
 
@@ -37,10 +39,10 @@ public final class Place {
   }
 
   // Name of the person who submitted this favorite place
-  private String name;
+  private String username;
 
-  public String getName() {
-    return name;
+  public String getUsername() {
+    return username;
   }
 
   // Default value when setLon, setLat is not pass into constructor
@@ -54,6 +56,12 @@ public final class Place {
 
   public double getLongitude() {
     return longitude;
+  }
+
+  private String name;
+
+  public String getName() {
+    return name;
   }
 
   // Description of the place

@@ -13,9 +13,22 @@
     android:inputType="textMultiLine|textCapSentences|textAutoComplete"
     android:singleLine="true"
     android:textIsSelectable="true"
-    android:text="Name"/>
+    android:text="Place Name"/>
+
   <EditText
     android:id="@+id/description"
+    android:layout_width="match_parent"
+    android:layout_height="438dp"
+    android:layout_weight="1"
+    android:gravity="top|start"
+    android:inputType="textMultiLine|textCapSentences|textAutoComplete"
+    android:padding="8dp"
+    android:singleLine="false"
+    android:text="@string/initial_text"
+    android:textAlignment="viewStart"
+    android:textIsSelectable="true" />
+  <EditText
+    android:id="@+id/username"
     android:layout_width="match_parent"
     android:layout_weight="1"
     android:layout_height="0dp"
@@ -23,9 +36,10 @@
     android:padding="8dp"
     android:inputType="textMultiLine|textCapSentences|textAutoComplete"
     android:singleLine="false"
-    android:textAlignment="viewStart"
+    android:textAlignment="center"
     android:textIsSelectable="true"
-    android:text="@string/initial_text"/>
+    android:textStyle="italic"
+    android:text="username"/>
   <LinearLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
