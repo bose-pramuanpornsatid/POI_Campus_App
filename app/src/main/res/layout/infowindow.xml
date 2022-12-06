@@ -68,7 +68,7 @@
       <ImageButton
         android:id="@+id/infoWindowButton"
         style="@style/Widget.AppCompat.ImageButton"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="4dp"
         android:layout_width="50dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
