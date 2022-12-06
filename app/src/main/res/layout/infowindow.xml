@@ -60,19 +60,31 @@
       android:stepSize="0.1"
       android:progressTint="@color/Gold"
       />
-
-    <ImageButton
-      android:id="@+id/infoWindowButton"
-      style="@style/Widget.AppCompat.ImageButton"
-      android:layout_width="50dp"
-      android:layout_height="35dp"
-      android:layout_gravity="center_horizontal"
-      android:alpha="0.9"
-      android:backgroundTint="#858585"
-      android:clickable="true"
-      android:elevation="30dp"
-      android:scaleType="fitCenter"
-      android:src="@android:drawable/ic_dialog_map" />
+    <LinearLayout
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center">
+      <ImageButton
+        android:id="@+id/infoWindowButton"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_marginRight="5dp"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:alpha="0.9"
+        android:backgroundTint="@color/ForestGreen"
+        android:clickable="true"
+        android:elevation="30dp"
+        android:scaleType="fitCenter"
+        android:src="@android:drawable/ic_dialog_map"/>
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/street_view"
+        android:textStyle="bold"/>
+    </LinearLayout>
   </LinearLayout>
 
 

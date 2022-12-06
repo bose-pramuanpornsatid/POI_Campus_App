@@ -92,7 +92,8 @@ public final class Server extends Dispatcher {
         throw new IllegalArgumentException();
       }
       UUID uuid = UUID.fromString(placeReq.getId()); // check if UUID is valid using fromString
-      boolean b2 = (placeReq.getUsername() == null) || (placeReq.getUsername().trim().length() == 0);
+      boolean b2 =
+          (placeReq.getUsername() == null) || (placeReq.getUsername().trim().length() == 0);
       boolean b3 = (placeReq.getLatitude() < -90 || placeReq.getLatitude() > 90);
       boolean b4 = (placeReq.getLongitude() < -180 || placeReq.getLongitude() > 180);
       boolean b5 =

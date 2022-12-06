@@ -131,7 +131,9 @@ public final class MP2Test {
         return;
       }
       Place place = newPlace.get();
-      assertWithMessage("Wrong name on newly-added place").that(place.getUsername()).isEqualTo(name);
+      assertWithMessage("Wrong name on newly-added place")
+          .that(place.getUsername())
+          .isEqualTo(name);
       assertWithMessage("Wrong latitude on newly-added place")
           .that(place.getLatitude())
           .isEqualTo(latitude);

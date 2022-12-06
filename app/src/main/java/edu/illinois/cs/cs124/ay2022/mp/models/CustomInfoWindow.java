@@ -28,18 +28,17 @@ public class CustomInfoWindow extends BasicInfoWindow {
   public CustomInfoWindow(int layoutResId, MapView mapView) {
     super(layoutResId, mapView);
 
-    if (mTitleId == UNDEFINED_RES_ID)
-      setResIds(mapView.getContext());
+    if (mTitleId == UNDEFINED_RES_ID) setResIds(mapView.getContext());
 
-    //default behavior: close it when clicking on the bubble:
-    mView.setOnTouchListener(new View.OnTouchListener() {
-      @Override
-      public boolean onTouch(View v, MotionEvent e) {
-        if (e.getAction() == MotionEvent.ACTION_UP)
-          close();
-        return true;
-      }
-    });
+    // default behavior: close it when clicking on the bubble:
+    mView.setOnTouchListener(
+        new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View v, MotionEvent e) {
+            if (e.getAction() == MotionEvent.ACTION_UP) close();
+            return true;
+          }
+        });
   }
 
   public void setRating(final float setRating) {
@@ -47,14 +46,18 @@ public class CustomInfoWindow extends BasicInfoWindow {
   }
 
   private static void setResIds(Context context) {
-    String packageName = context.getPackageName(); //get application package name
+    String packageName = context.getPackageName(); // get application package name
     mTitleId = context.getResources().getIdentifier("id/bubble_title", null, packageName);
-    mDescriptionId = context.getResources().getIdentifier("id/bubble_description", null, packageName);
-    mSubDescriptionId = context.getResources().getIdentifier("id/bubble_subdescription", null, packageName);
+    mDescriptionId =
+        context.getResources().getIdentifier("id/bubble_description", null, packageName);
+    mSubDescriptionId =
+        context.getResources().getIdentifier("id/bubble_subdescription", null, packageName);
     mImageId = context.getResources().getIdentifier("id/bubble_image", null, packageName);
     mRatingId = context.getResources().getIdentifier("id/rating_bar", null, packageName);
-    if (mTitleId == UNDEFINED_RES_ID || mDescriptionId == UNDEFINED_RES_ID
-        || mSubDescriptionId == UNDEFINED_RES_ID || mImageId == UNDEFINED_RES_ID) {
+    if (mTitleId == UNDEFINED_RES_ID
+        || mDescriptionId == UNDEFINED_RES_ID
+        || mSubDescriptionId == UNDEFINED_RES_ID
+        || mImageId == UNDEFINED_RES_ID) {
       Log.e(IMapView.LOGTAG, "BasicInfoWindow: unable to get res ids in " + packageName);
     }
   }
@@ -63,8 +66,7 @@ public class CustomInfoWindow extends BasicInfoWindow {
   public void onOpen(Object item) {
     OverlayWithIW overlay = (OverlayWithIW) item;
     String title = overlay.getTitle();
-    if (title == null)
-      title = "";
+    if (title == null) title = "";
     if (mView == null) {
       Log.w(IMapView.LOGTAG, "Error trapped, BasicInfoWindow.open, mView is null!");
       return;
@@ -74,12 +76,11 @@ public class CustomInfoWindow extends BasicInfoWindow {
     if (temp != null) temp.setText(title);
 
     String snippet = overlay.getSnippet();
-    if (snippet == null)
-      snippet = "";
+    if (snippet == null) snippet = "";
     Spanned snippetHtml = Html.fromHtml(snippet);
     ((TextView) mView.findViewById(mDescriptionId /*R.id.description*/)).setText(snippetHtml);
 
-    //handle sub-description, hidding or showing the text view:
+    // handle sub-description, hidding or showing the text view:
     TextView subDescText = (TextView) mView.findViewById(mSubDescriptionId);
     String subDesc = overlay.getSubDescription();
     if (subDesc != null && !("".equals(subDesc))) {
@@ -89,7 +90,7 @@ public class CustomInfoWindow extends BasicInfoWindow {
       subDescText.setVisibility(View.GONE);
     }
 
-    //handle RatingBar
+    // handle RatingBar
     RatingBar ratingBar = (RatingBar) mView.findViewById(mRatingId);
     ratingBar.setRating(rating);
   }

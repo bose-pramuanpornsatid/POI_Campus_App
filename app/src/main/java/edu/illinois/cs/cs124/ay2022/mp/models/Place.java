@@ -68,7 +68,9 @@ public final class Place {
 
   private float rating;
 
-  public float getRating() { return rating; }
+  public float getRating() {
+    return rating;
+  }
 
   // Description of the place
   private String description;

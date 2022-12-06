@@ -3,10 +3,7 @@ package edu.illinois.cs.cs124.ay2022.mp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.RatingBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import edu.illinois.cs.cs124.ay2022.mp.R;
@@ -25,7 +22,6 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
-import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 /*
@@ -195,7 +191,7 @@ public final class MainActivity extends AppCompatActivity
       marker.setPosition(new GeoPoint(place.getLatitude(), place.getLongitude()));
       marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
       marker.setTitle(place.getName());
-      marker.setSubDescription(place.getUsername());
+      marker.setSubDescription("by " + place.getUsername());
       marker.setSnippet(place.getDescription());
 
       // Custom marker info window
@@ -231,8 +227,7 @@ public final class MainActivity extends AppCompatActivity
                     launchStreetview.putExtra("latitude", lat);
                     launchStreetview.putExtra("longitude", lon);
                     startActivity(launchStreetview);
-                  }
-              );
+                  });
             } else {
               m.closeInfoWindow();
               openPlace = null;
@@ -290,9 +285,9 @@ public final class MainActivity extends AppCompatActivity
 
   @Override
   public boolean singleTapConfirmedHelper(final GeoPoint p) {
-//    Log.d(TAG, "singleTap");
-//    Intent launchStreetview = new Intent(this, StreetView.class);
-//    startActivity(launchStreetview);
+    //    Log.d(TAG, "singleTap");
+    //    Intent launchStreetview = new Intent(this, StreetView.class);
+    //    startActivity(launchStreetview);
     return false;
   }
 

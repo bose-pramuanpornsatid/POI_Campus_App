@@ -1,15 +1,13 @@
 package edu.illinois.cs.cs124.ay2022.mp.activities;
 
-import com.google.android.gms.maps.StreetViewPanoramaOptions;
-import com.google.android.gms.maps.StreetViewPanoramaView;
-import com.google.android.gms.maps.model.LatLng;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.maps.StreetViewPanoramaOptions;
+import com.google.android.gms.maps.StreetViewPanoramaView;
+import com.google.android.gms.maps.model.LatLng;
 
 public class StreetView extends AppCompatActivity {
   private StreetViewPanoramaView streetViewPanoramaView;
@@ -36,7 +34,8 @@ public class StreetView extends AppCompatActivity {
     }
 
     streetViewPanoramaView = new StreetViewPanoramaView(this, options);
-    addContentView(streetViewPanoramaView,
+    addContentView(
+        streetViewPanoramaView,
         new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
     // *** IMPORTANT ***
