@@ -71,6 +71,7 @@ dependencies {
 
     // Additional dependencies for google map street view
     implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.material:material:1.5.0")
 
     testImplementation("com.github.cs125-illinois:gradlegrader:2022.10.0")
     testImplementation("junit:junit:4.13.2")

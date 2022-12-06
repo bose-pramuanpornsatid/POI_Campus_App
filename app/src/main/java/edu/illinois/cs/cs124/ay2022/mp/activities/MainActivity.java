@@ -3,11 +3,15 @@ package edu.illinois.cs.cs124.ay2022.mp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import edu.illinois.cs.cs124.ay2022.mp.R;
 import edu.illinois.cs.cs124.ay2022.mp.application.FavoritePlacesApplication;
+import edu.illinois.cs.cs124.ay2022.mp.models.CustomInfoWindow;
 import edu.illinois.cs.cs124.ay2022.mp.models.Place;
 import edu.illinois.cs.cs124.ay2022.mp.models.ResultMightThrow;
 import java.util.ArrayList;
@@ -195,8 +199,11 @@ public final class MainActivity extends AppCompatActivity
       marker.setSnippet(place.getDescription());
 
       // Custom marker info window
-      BasicInfoWindow basicInfoWindow = new BasicInfoWindow(R.layout.infowindow, mapView);
+      CustomInfoWindow basicInfoWindow = new CustomInfoWindow(R.layout.infowindow, mapView);
       marker.setInfoWindow(basicInfoWindow);
+
+      // Set Rating Bar
+      basicInfoWindow.setRating(place.getRating());
 
       /*
        * Normally clicking on the marker both opens the popup and recenters the map.

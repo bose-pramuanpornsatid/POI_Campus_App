@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import edu.illinois.cs.cs124.ay2022.mp.R;
@@ -66,11 +67,13 @@ public class AddPlaceActivity extends AppCompatActivity {
           EditText nameWidget = findViewById(R.id.name);
           String name = nameWidget.getText().toString();
           EditText usernameWidget = findViewById(R.id.username);
+          RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+          float rating = ratingBar.getRating();
           String username = usernameWidget.getText().toString();
           String id = FavoritePlacesApplication.CLIENT_ID;
 
           // Init new place
-          Place place = new Place(id, username, lat, lon, name, description);
+          Place place = new Place(id, username, lat, lon, name, rating, description);
           // Try posting place to server using helper function
           try {
             clientPostPlace(place);

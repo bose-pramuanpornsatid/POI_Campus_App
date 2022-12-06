@@ -22,12 +22,14 @@ public final class Place {
       final double setLatitude,
       final double setLongitude,
       final String setName,
+      final float setRating,
       final String setDescription) {
     id = setId;
     username = setUsername;
     latitude = setLatitude;
     longitude = setLongitude;
     name = setName;
+    rating = setRating;
     description = setDescription;
   }
 
@@ -63,6 +65,10 @@ public final class Place {
   public String getName() {
     return name;
   }
+
+  private float rating;
+
+  public float getRating() { return rating; }
 
   // Description of the place
   private String description;

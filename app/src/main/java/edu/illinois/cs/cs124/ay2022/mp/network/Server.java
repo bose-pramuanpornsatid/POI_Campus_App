@@ -207,7 +207,8 @@ public final class Server extends Dispatcher {
               Double.parseDouble(parts[2]),
               Double.parseDouble(parts[3]),
               parts[4],
-              parts[5]));
+              Float.parseFloat(parts[5]) / 2,
+              parts[6]));
     }
     return toReturn;
   }

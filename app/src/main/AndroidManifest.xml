@@ -34,6 +34,5 @@
         </activity>
         <activity android:name=".activities.AddPlaceActivity" />
         <activity android:name=".activities.StreetView"/>
-        <activity android:name=".activities.StreetViewEx"/>
     </application>
 </manifest>
