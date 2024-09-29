@@ -6,7 +6,7 @@
 - Search for POIs
 - New revamp custom info window for markers
   - Custom layout (better looking)
-  - More information (Name, description, username that submitted
+  - More information (Name, description, username that submitted)
   - Button to toggle google map street view
 - Google map street view layout
   - Open up a new activity with custom layout and the street view of the selected place
